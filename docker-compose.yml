@@ -2,7 +2,7 @@ services:
   fetchmail:
     build: .
     volumes:
-      - ./fetchmail:/fetchmail
+      - ./:/fetchmail
       - fetchmail-data:/var/lib/fetchmail
     restart: always
 
