@@ -1,14 +1,12 @@
-FROM alpine:3.4
-MAINTAINER Jeffrey Boehm "jeff@ressourcenkonflikt.de"
+FROM alpine:3.22.0
 
-RUN apk --no-cache add fetchmail ca-certificates
+RUN apk --no-cache add fetchmail=6.5.2-r0 ca-certificates=20241121-r2
 
 VOLUME /var/lib/fetchmail
-RUN chown fetchmail /var/lib/fetchmail
+VOLUME /fetchmail
 
-ONBUILD COPY fetchmailrc /etc/fetchmailrc
-ONBUILD RUN chown fetchmail /etc/fetchmailrc && \
-            chmod 400 /etc/fetchmailrc
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-ONBUILD USER fetchmail
-ONBUILD CMD ["fetchmail", "-d", "900", "-N", "-f", "/etc/fetchmailrc", "-vv"]
+USER fetchmail
+ENTRYPOINT ["/entrypoint.sh"]
