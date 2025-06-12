@@ -1,13 +1,10 @@
-version: '2'
 services:
   fetchmail:
     build: .
-    restart: on-failure:50
-    read_only: true
-    networks:
-      - mail
+    volumes:
+      - ./fetchmail:/fetchmail
+      - fetchmail-data:/var/lib/fetchmail
+    restart: always
 
-networks:
-  mail:
-    external:
-      name: mail_default
+volumes:
+  fetchmail-data:
